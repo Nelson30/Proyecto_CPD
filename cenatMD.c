@@ -161,7 +161,9 @@ int main(int argc, char** argv){
 		foreignNumber = n;
 
 		//TO DO: sending the local particles to the next processor, receiving the incoming foreign particle set and update both of them
-	
+        MPI_Send(locals, sizeof(locals), MPI_DOUBLE, (myRank+1)%p, 0, MPI_COMM_WORLD);
+
+        MPI_Recv(foreigners, sizeof(foreigners), MPI_DOUBLE, (myRank-1)%p, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
 		evolve(locals, foreigners, number, foreignNumber);
 	
