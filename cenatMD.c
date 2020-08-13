@@ -154,35 +154,47 @@ int main(int argc, char** argv){
 	start_time = MPI_Wtime();
 
 	// executing iterations
-	for(i=1; i<=iterations; i++){
-		
-		// cleaning forces in the particles
-		cleanForces(locals,number);
-		foreignNumber = n;
+    for (i = 1; i <= iterations; i++) {
 
-		//TO DO: sending the local particles to the next processor, receiving the incoming foreign particle set and update both of them
-        MPI_Send(locals, sizeof(locals), MPI_DOUBLE, (myRank+1)%p, 0, MPI_COMM_WORLD);
+        // cleaning forces in the particles
+        cleanForces(locals, number);
+        foreignNumber = n;
 
-        MPI_Recv(foreigners, sizeof(foreigners), MPI_DOUBLE, (myRank-1)%p, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        //TO DO: sending the local particles to the next processor, receiving the incoming foreign particle set and update both of them
+        MPI_Send(locals, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE,
+                 next, tag, MPI_COMM_WORLD);
 
-		evolve(locals, foreigners, number, foreignNumber);
-	
-		//TO DO: running the algorithm for (p-1)/2 rounds. REMEMBER: call evolve function
-
-		
+        MPI_Recv(foreigners, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE, previous, tag,
+                 MPI_COMM_WORLD, &status);
 
 
-		
+        evolve(locals, foreigners, number, foreignNumber);
+
+        //TO DO: running the algorithm for (p-1)/2 rounds. REMEMBER: call evolve function
+        for (int j = 1; j < (p - 1) / 2; ++j) {
+            MPI_Send(locals, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE,
+                     next, tag, MPI_COMM_WORLD);
+
+            MPI_Recv(foreigners, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE, previous, tag,
+                     MPI_COMM_WORLD, &status);
+
+            evolve(locals, foreigners, number, foreignNumber);
+        }
+
+        //TO DO: sending the particles to the origin
 
 
-		//TO DO: sending the particles to the initiator
-	
-
-		
-		
+        initiator = (myRank + 1 + (p - 1) / 2) % p;
+        sender = (myRank + (p - 1) / 2) % p;
 
 
-		//TO DO: receiving the incoming particles and merging them with the local set, interacting the local set
+        //TO DO: receiving the incoming particles and merging them with the local set, interacting the local set
+        MPI_Send(foreigners, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE,
+                 initiator, tag, MPI_COMM_WORLD);
+
+        MPI_Recv(locals, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE,
+                 sender, tag, MPI_COMM_WORLD, &status);
+
 		
 	
 		merge(locals,foreigners,number);
