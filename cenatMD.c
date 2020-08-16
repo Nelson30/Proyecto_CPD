@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-//#include <omp.h>
+#include <omp.h>
 
 // General constants
 #define TAG 7
@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
     struct particle *locals;                            // Array of local particles
     struct particle *foreigners;                            // Array of foreign particles
     MPI_Status status;                                // Return status for receive
-    int i, j, rounds, origin, sender, dump_flag, init_flag;
+    int i, j, rounds, initiator, sender, dump_flag, init_flag;
     double start_time, end_time;
 
     // checking the number of parameters
@@ -179,8 +179,8 @@ int main(int argc, char **argv) {
 
         //TO DO: running the algorithm for (p-1)/2 rounds. REMEMBER: call evolve function
         // Ya esta implementada una iteracion en el codigo anterior del primer TO DO
-        int ring_iterations = (p - 1) / 2;
-        for (int j = 1; j < ring_iterations; ++j) {
+        //int ring_iterations = (p - 1) / 2;
+        for (int j = 1; j < ((p-1) / 2); ++j) {
             MPI_Send(locals, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE,
                      next, tag, MPI_COMM_WORLD);
 
@@ -193,11 +193,11 @@ int main(int argc, char **argv) {
         //TO DO: sending the particles to the origin
 //        origin = (myRank + 1) % ((p - 1) / 2);
 //        origin = (myRank + (p - 1) / 2) % p;
-        origin = (myRank + 1 + ring_iterations) % p;
-        sender = (myRank + ring_iterations) % p;
+        initiator = (myRank + 1 + ((p-1) / 2)) % p;
+        sender = (myRank + ((p-1) / 2)) % p;
 
         MPI_Send(foreigners, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE,
-                 origin, tag, MPI_COMM_WORLD);
+                 initiator, tag, MPI_COMM_WORLD);
 
         MPI_Recv(locals, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE,
                  sender, tag, MPI_COMM_WORLD, &status);
