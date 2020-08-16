@@ -171,7 +171,8 @@ int main(int argc, char** argv){
         evolve(locals, foreigners, number, foreignNumber);
 
         //TO DO: running the algorithm for (p-1)/2 rounds. REMEMBER: call evolve function
-        for (int j = 1; j < (p - 1) / 2; ++j) {
+        int ring_iterations = (p - 1) / 2
+        for (int j = 1; j < ring_iterations; ++j) {
             MPI_Send(locals, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE,
                      next, tag, MPI_COMM_WORLD);
 
@@ -184,8 +185,8 @@ int main(int argc, char** argv){
         //TO DO: sending the particles to the origin
 
 
-        initiator = (myRank + 1 + (p - 1) / 2) % p;
-        sender = (myRank + (p - 1) / 2) % p;
+        initiator = (myRank + 1 + ring_iterations % p;
+        sender = (myRank + ring_iterations % p;
 
 
         //TO DO: receiving the incoming particles and merging them with the local set, interacting the local set
