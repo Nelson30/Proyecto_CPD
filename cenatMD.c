@@ -160,7 +160,9 @@ int main(int argc, char **argv) {
     start_time = MPI_Wtime();
 
     // executing iterations
-
+#pragma omp parallel
+{
+#pragma omp parallel for
     for (i = 1; i <= iterations; i++) {
 
         // cleaning forces in the particles
@@ -178,8 +180,6 @@ int main(int argc, char **argv) {
         evolve(locals, foreigners, number, foreignNumber);
 
         //TO DO: running the algorithm for (p-1)/2 rounds. REMEMBER: call evolve function
-        // Ya esta implementada una iteracion en el codigo anterior del primer TO DO
-        //int ring_iterations = (p - 1) / 2;
         for (int j = 1; j < ((p-1) / 2); ++j) {
             MPI_Send(locals, number * (sizeof(struct particle)) / sizeof(double), MPI_DOUBLE,
                      next, tag, MPI_COMM_WORLD);
@@ -191,8 +191,6 @@ int main(int argc, char **argv) {
         }
 
         //TO DO: sending the particles to the origin
-//        origin = (myRank + 1) % ((p - 1) / 2);
-//        origin = (myRank + (p - 1) / 2) % p;
         initiator = (myRank + 1 + ((p-1) / 2)) % p;
         sender = (myRank + ((p-1) / 2)) % p;
 
@@ -226,6 +224,7 @@ int main(int argc, char **argv) {
             }
         }
     }
+}
 
 
     end_time = MPI_Wtime();

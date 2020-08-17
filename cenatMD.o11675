@@ -1,0 +1,12 @@
+Assertion failed in file src/mpid/ch3/channels/nemesis/src/ch3_istartmsgv.c at line 141: MPIDI_CH3I_shm_active_send == NULL
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   PID 70851 RUNNING AT nu-0d.cnca
+=   EXIT CODE: 11
+=   CLEANING UP REMAINING PROCESSES
+=   YOU CAN IGNORE THE BELOW CLEANUP MESSAGES
+===================================================================================
+YOUR APPLICATION TERMINATED WITH THE EXIT STRING: Segmentation fault (signal 11)
+This typically refers to a problem with your application.
+Please see the FAQ page for debugging suggestions
