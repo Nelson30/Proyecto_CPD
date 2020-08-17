@@ -111,7 +111,6 @@ int main(int argc, char **argv) {
     //TO DO: compute previous and next processes
     next = (myRank + 1) % p;
     previous = (myRank + p - 1) % p;
-    //Genial
 
     number = n;
     maxNumber = n;
