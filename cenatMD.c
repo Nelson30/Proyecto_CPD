@@ -160,9 +160,7 @@ int main(int argc, char **argv) {
     start_time = MPI_Wtime();
 
     // executing iterations
-#pragma omp parallel
-{
-#pragma omp parallel for
+//pragma omp parallel for
     for (i = 1; i <= iterations; i++) {
 
         // cleaning forces in the particles
@@ -224,7 +222,7 @@ int main(int argc, char **argv) {
             }
         }
     }
-}
+
 
 
     end_time = MPI_Wtime();

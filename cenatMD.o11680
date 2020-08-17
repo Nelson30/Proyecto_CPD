@@ -1,0 +1,10 @@
+Assertion failed in file src/mpid/ch3/channels/nemesis/src/ch3_istartmsgv.c at line 141: MPIDI_CH3I_shm_active_send == NULL
+Assertion failed in file src/mpid/ch3/src/ch3u_handle_connection.c at line 325: vc->state == MPIDI_VC_STATE_ACTIVE
+Assertion failed in file src/mpid/ch3/channels/nemesis/src/ch3_istartmsgv.c at line 141: MPIDI_CH3I_shm_active_send == NULL
+Assertion failed in file src/mpid/ch3/channels/nemesis/src/ch3_istartmsgv.c at line 141: MPIDI_CH3I_shm_active_send == NULL
+Assertion failed in file src/mpid/ch3/channels/nemesis/src/ch3_istartmsgv.c at line 141: MPIDI_CH3I_shm_active_send == NULL
+Assertion failed in file src/mpid/ch3/channels/nemesis/src/ch3_istartmsgv.c at line 141: MPIDI_CH3I_shm_active_send == NULL
+Assertion failed in file src/mpid/ch3/channels/nemesis/src/ch3_istartmsgv.c at line 141: MPIDI_CH3I_shm_active_send == NULL
+Assertion failed in file src/mpid/ch3/channels/nemesis/src/ch3_istartmsgv.c at line 141: MPIDI_CH3I_shm_active_send == NULL
+Assertion failed in file src/mpid/ch3/channels/nemesis/src/ch3_istartmsgv.c at line 141: MPIDI_CH3I_shm_active_send == NULL
+internal ABORT - process 0
